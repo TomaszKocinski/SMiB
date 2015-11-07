@@ -36,7 +36,7 @@ void Map::Draw() {
 	cout << "|," << (int)(Tab_Of_Values_Vertical[1][0] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[1][1] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[1][2] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[1][3] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[1][4] * 10) << "\n";
 	cout << "| ," << (int)(Tab_Of_Values_Horizontal[2][0] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[2][1] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[2][2] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[2][3] * 10) << " |\n";
 	cout << "o----o----o----o----o\n|    |    |    |    |\n";
-	cout << "|," << (int)(Tab_Of_Values_Vertical[2][0] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[20][1] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][2] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][3] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][4] * 10) << "\n";
+	cout << "|," << (int)(Tab_Of_Values_Vertical[2][0] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][1] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][2] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][3] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[2][4] * 10) << "\n";
 	cout << "| ," << (int)(Tab_Of_Values_Horizontal[3][0] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[3][1] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[3][2] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[3][3] * 10) << " |\n";
 	cout << "o----o----o----o----o\n|    |    |    |    |\n";
 	cout << "|," << (int)(Tab_Of_Values_Vertical[3][0] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][1] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][2] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][3] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][4] * 10) << "\n";
