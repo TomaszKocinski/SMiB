@@ -147,10 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Crossroad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapContener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crossroad.h" />
     <ClInclude Include="MapContener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

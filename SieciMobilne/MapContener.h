@@ -1,15 +1,22 @@
 #pragma once
-#include <array>
-#include <random>
-#include <cmath>
+class point {
+public:
+	int x,y;
+	point(int x_arg,int y_arg):x(x_arg),y(y_arg){}
+	bool isEqual(point);
+};
+class Crossroad;
 class Map
 {
-	double Tab_Of_Values_Horizontal[5][4];
-	double Tab_Of_Values_Vertical[4][5];
+	Crossroad** crossroad;
+	const int vSize = 5;
+	const int hSize = 5;
 public:
 	Map();
 	~Map();
 	void Draw();
+	void Traffic();
+	void Find_Way(point,point);
 private:
 
 };
