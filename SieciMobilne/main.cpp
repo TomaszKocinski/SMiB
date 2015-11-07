@@ -5,5 +5,5 @@ using namespace std;
 
 int main(void) {
 	Map* Instace_Of_Map=new Map();
-	cout << "siema";
+	Instace_Of_Map->Draw();
 }
