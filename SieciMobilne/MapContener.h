@@ -10,7 +10,7 @@ class Map
 {
 	Crossroad** crossroad;
 	const int vSize = 5;
-	const int hSize = 5;
+	const int hSize = vSize;
 public:
 	Map();
 	~Map();

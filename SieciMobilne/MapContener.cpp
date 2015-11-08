@@ -3,6 +3,7 @@
 #include<iostream>
 #include<list>
 #include<iterator>
+#include <iomanip>
 
 using namespace std;
 Map::Map()
@@ -55,7 +56,7 @@ void Map::Find_Way(point source, point destination)
 				else current_point.y--;
 			}
 			else {
-				 current_point.x++;
+				current_point.x++;
 			}
 		}
 
@@ -88,7 +89,7 @@ void Map::Find_Way(point source, point destination)
 
 	list<point>::iterator ite;
 	for (ite = visited_streets.begin(); ite != visited_streets.end(); ite++) {
-		cout << ite->x << "," << ite->y<<endl;
+		cout << ite->x << "," << ite->y << endl;
 	}
 }
 void Map::Draw() {
@@ -105,7 +106,7 @@ void Map::Draw() {
 	cout << "o----o----o----o----o\n|    |    |    |    |\n";
 	cout << "|," << (int)(Tab_Of_Values_Vertical[3][0] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][1] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][2] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][3] * 10) << "  |," << (int)(Tab_Of_Values_Vertical[3][4] * 10) << "\n";
 	cout << "| ," << (int)(Tab_Of_Values_Horizontal[4][0] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[4][1] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[4][2] * 10) << " | ," << (int)(Tab_Of_Values_Horizontal[4][3] * 10) << " |\n";
-	cout << "o----o----o----o----o\n";*/
+	cout << "o----o----o----o----o\n";
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
 			cout << " ";
@@ -120,6 +121,71 @@ void Map::Draw() {
 		}
 		cout << "\n\n\n";
 	}
+	*/
+
+	cout << endl;
+	for (int i = 0; i < vSize - 1; i++) {
+
+		if (i == 0) {
+			for (int j = 0; j < hSize - 1; j++) {
+				cout << setw(7) << right << crossroad[i][j].E << setw(3) << " ";
+			}
+
+		}
+
+		else {
+			for (int j = 0; j < hSize - 1; j++) {
+				cout << setw(1) << char(179) << setw(6) << right << crossroad[i][j].E << setw(3) << " ";
+			}
+			cout << char(179);
+		}
+
+		cout << endl;
+		for (int j = 0; j < hSize - 1; j++) {
+			cout << setw(1) << char(219) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196);
+		}
+		cout << char(219);
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(10) << left << char(179);
+		}
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(10) << left << char(179);
+		}
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(10) << left << char(179);
+		}
+
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(1) << left << char(179) << setw(9) << left << crossroad[i][j].S;
+		}
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(10) << left << char(179);
+		}
+		cout << endl;
+		for (int j = 0; j < hSize; j++) {
+			cout << setw(10) << left << char(179);
+		}
+		cout << endl;
+
+
+	}
+	int i = vSize - 1;
+	for (int j = 0; j < hSize - 1; j++) {
+		cout << setw(1) << char(179) << setw(6) << right << crossroad[i][j].E << setw(3) << " ";
+	}
+	cout << char(179);
+	cout << endl;
+	for (int j = 0; j < hSize - 1; j++) {
+		cout << char(219) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196) << char(196);
+	}
+	cout << char(219);
+	cout << endl << endl << endl;
+
 
 }
 
