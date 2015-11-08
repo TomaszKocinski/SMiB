@@ -92,6 +92,88 @@ void Map::Find_Way(point source, point destination)
 		cout << ite->x << "," << ite->y << endl;
 	}
 }
+void Map::Find_Way_Extended(point source, point destination)
+{
+	cout << "Source And Destination(" << source.x << "," << source.y << ")->(" << destination.x << "," << destination.y << ")\n";
+	list<point> visited_streets;
+	visited_streets.push_back(source);
+	point current_point = source;
+	while (!current_point.isEqual(destination)) {
+		if (current_point.x < destination.x) {
+			if (current_point.y < destination.y) {
+				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].S) {
+					current_point.x++;
+					cout << "(" << current_point.x - 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) <<left << crossroad[current_point.x-1][current_point.y].E << " <= " << setw(4) << crossroad[current_point.x-1][current_point.y].S;
+				}
+				else {
+					current_point.y++;
+					cout << "(" << current_point.x << "," << current_point.y-1 << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x][current_point.y-1].S << " <= " << setw(4) << crossroad[current_point.x][current_point.y-1].E;
+				}
+			}
+			else if (current_point.y > destination.y) {
+				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].N) {
+					current_point.x++;
+					cout << "(" << current_point.x - 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x - 1][current_point.y].E << " <= " << setw(4) << crossroad[current_point.x - 1][current_point.y].N;
+				}
+				else {
+					current_point.y--;
+					cout << "(" << current_point.x << "," << current_point.y+1 << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x][current_point.y - 1].N << " <= " << setw(4) << crossroad[current_point.x][current_point.y - 1].E;
+				}
+			}
+			else {
+				current_point.x++;
+				cout << "(" << current_point.x-1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: dest y=" << destination.y <<" & curr x("<<current_point.x<<")< dest x("<<destination.y<<")";
+			}
+		}
+
+		else if (current_point.x > destination.x) {
+			if (current_point.y < destination.y) {
+				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].S) {
+					current_point.x--;
+					cout << "(" << current_point.x + 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x + 1][current_point.y].W << " <= " << setw(4) << crossroad[current_point.x - 1][current_point.y].S;
+				}
+				else {
+					current_point.y++;
+					cout << "(" << current_point.x << "," << current_point.y-1 << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x][current_point.y - 1].S << " <= " << setw(4) << crossroad[current_point.x][current_point.y - 1].W;
+				}
+			}
+			else if (current_point.y > destination.y) {
+				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].N) {
+					current_point.x--;
+					cout << "(" << current_point.x + 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x + 1][current_point.y].W << " <= " << setw(4) << crossroad[current_point.x + 1][current_point.y].N;
+				}
+				else {
+					current_point.y--;
+					cout << "(" << current_point.x << "," << current_point.y + 1 << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x][current_point.y + 1].N << " <= " << setw(4) << crossroad[current_point.x][current_point.y + 1].W;
+				}
+			}
+			else {
+				current_point.x--;
+				cout << "(" << current_point.x+1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: dest y=" << destination.y << " & curr x(" << current_point.x << ")> dest x(" << destination.y << ")";
+			}
+		}
+
+		else {
+			if (current_point.y < destination.y) {
+				current_point.y++;
+				cout << "(" << current_point.x << "," << current_point.y -1 << ")->(" << current_point.x << "," << current_point.y << ") - because: dest x=" << destination.x << " & curr y(" << current_point.y << ")< dest y(" << destination.y << ")";
+	
+			}
+			else {
+				current_point.y--;
+				cout << "(" << current_point.x  << "," << current_point.y +1 << ")->(" << current_point.x << "," << current_point.y << ") - because: dest x=" << destination.x << " & curr y(" << current_point.y << ")> dest y(" << destination.y << ")";
+			}
+		}
+		visited_streets.push_back(current_point);
+		cout << "\n";
+	}
+
+	/*list<point>::iterator ite;
+	for (ite = visited_streets.begin(); ite != visited_streets.end(); ite++) {
+		cout << ite->x << "," << ite->y << endl;
+	}*/
+}
+
 void Map::Draw() {
 	/*cout << "  ,"<<(int)(Tab_Of_Values_Horizontal[0][0]*10)<<"   ," << (int)(Tab_Of_Values_Horizontal[0][1] * 10) << "   ," << (int)(Tab_Of_Values_Horizontal[0][2] * 10) << "   ," << (int)(Tab_Of_Values_Horizontal[0][3] * 10) << "\n";
 	cout << "o----o----o----o----o\n|    |    |    |    |\n";

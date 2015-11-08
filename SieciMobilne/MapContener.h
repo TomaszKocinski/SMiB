@@ -17,6 +17,7 @@ public:
 	void Draw();
 	void Traffic();
 	void Find_Way(point,point);
+	void Find_Way_Extended(point, point);
 private:
 
 };
