@@ -24,25 +24,33 @@ bool point::operator!=(point arg)
 
 Map::Map()
 {
-	crossroad = new Crossroad*[hSize];
-	for (int i = 0; i < hSize; i++)
+	crossroad = new Crossroad*[vSize];
+	for (int i = 0; i < vSize; i++)
 	{
-		crossroad[i] = new Crossroad[vSize];
+		crossroad[i] = new Crossroad[hSize];
 	}
 }
 
 void Map::Traffic()
 {
-	for (int i = 0; i < vSize; i++) {
-		for (int j = 0; j < hSize - 1; j++) {
-			crossroad[i][j].Traffic('E');
-			crossroad[j][i].Traffic('S');
+	for (int y = 0; y < vSize; y++) {
+		for (int x = 0; x < hSize - 1; x++) {
+			crossroad[y][x].Traffic('E');
 		}
 	}
-	for (int i = vSize - 1; i >= 0; i--) {
-		for (int j = hSize - 1; j > 0; j--) {
-			crossroad[i][j].W = crossroad[i][j - 1].E;
-			crossroad[j][i].N = crossroad[j - 1][i].S;
+	for (int y = 0; y < vSize - 1; y++) {
+		for (int x = 0; x < hSize; x++) {
+			crossroad[y][x].Traffic('S');
+		}
+	}
+	for (int y = vSize - 1; y >= 0; y--) {
+		for (int x = hSize - 1; x > 0; x--) {
+			crossroad[y][x].W = crossroad[y][x - 1].E;
+		}
+	}
+	for (int y = vSize - 1; y > 0; y--) {
+		for (int x = hSize - 1; x >= 0; x--) {
+			crossroad[y][x].N = crossroad[y - 1][x].S;
 		}
 	}
 
@@ -56,13 +64,13 @@ void Map::Find_Way(point source, point destination)
 	while (current_point != destination) {
 		if (current_point.x < destination.x) {
 			if (current_point.y < destination.y) {
-				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].S) {
+				if (crossroad[current_point.y][current_point.x].E <= crossroad[current_point.y][current_point.x].S) {
 					current_point.x++;
 				}
 				else current_point.y++;
 			}
 			else if (current_point.y > destination.y) {
-				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].N) {
+				if (crossroad[current_point.y][current_point.x].E <= crossroad[current_point.y][current_point.x].N) {
 					current_point.x++;
 				}
 				else current_point.y--;
@@ -74,13 +82,13 @@ void Map::Find_Way(point source, point destination)
 
 		else if (current_point.x > destination.x) {
 			if (current_point.y < destination.y) {
-				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].S) {
+				if (crossroad[current_point.y][current_point.x].W <= crossroad[current_point.y][current_point.x].S) {
 					current_point.x--;
 				}
 				else current_point.y++;
 			}
 			else if (current_point.y > destination.y) {
-				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].N) {
+				if (crossroad[current_point.y][current_point.x].W <= crossroad[current_point.y][current_point.x].N) {
 					current_point.x--;
 				}
 				else current_point.y--;
@@ -118,7 +126,7 @@ void Map::Find_Way_Extended(point source, point destination)
 	while (current_point != destination) {
 		if (current_point.x < destination.x) {
 			if (current_point.y < destination.y) {
-				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].S) {
+				if (crossroad[current_point.y][current_point.x].E <= crossroad[current_point.y][current_point.x].S) {
 					current_point.x++;
 					cout << "(" << current_point.x - 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x - 1][current_point.y].E << " <= " << setw(4) << crossroad[current_point.x - 1][current_point.y].S;
 				}
@@ -128,7 +136,7 @@ void Map::Find_Way_Extended(point source, point destination)
 				}
 			}
 			else if (current_point.y > destination.y) {
-				if (crossroad[current_point.x][current_point.y].E <= crossroad[current_point.x][current_point.y].N) {
+				if (crossroad[current_point.y][current_point.x].E <= crossroad[current_point.y][current_point.x].N) {
 					current_point.x++;
 					cout << "(" << current_point.x - 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x - 1][current_point.y].E << " <= " << setw(4) << crossroad[current_point.x - 1][current_point.y].N;
 				}
@@ -145,7 +153,7 @@ void Map::Find_Way_Extended(point source, point destination)
 
 		else if (current_point.x > destination.x) {
 			if (current_point.y < destination.y) {
-				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].S) {
+				if (crossroad[current_point.y][current_point.x].W <= crossroad[current_point.y][current_point.x].S) {
 					current_point.x--;
 					cout << "(" << current_point.x + 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x + 1][current_point.y].W << " <= " << setw(4) << crossroad[current_point.x - 1][current_point.y].S;
 				}
@@ -155,7 +163,7 @@ void Map::Find_Way_Extended(point source, point destination)
 				}
 			}
 			else if (current_point.y > destination.y) {
-				if (crossroad[current_point.x][current_point.y].W <= crossroad[current_point.x][current_point.y].N) {
+				if (crossroad[current_point.y][current_point.x].W <= crossroad[current_point.y][current_point.x].N) {
 					current_point.x--;
 					cout << "(" << current_point.x + 1 << "," << current_point.y << ")->(" << current_point.x << "," << current_point.y << ") - because: " << setw(4) << left << crossroad[current_point.x + 1][current_point.y].W << " <= " << setw(4) << crossroad[current_point.x + 1][current_point.y].N;
 				}
@@ -201,11 +209,24 @@ void Map::Find_Way_Attempt_Third(point source, point destination) {
 	point current_point = source;
 	while (current_point != destination) {
 		current_point = looking_for_destination(current_point, destination, visited_streets);
-		if (current_point.x == -1 || current_point.y==-1) throw new exception();
-		list<point>::iterator ite = visited_streets.end();
-		ite--;
-		cout << (*ite).x << (*ite).y << endl;
+		visited_streets.push_back(current_point);
+		if (visited_streets.size()) {
+			list<point>::iterator ite = visited_streets.end();
+			ite--;
+			for (int i = 0; i < visited_streets.size() - 1; i++)
+				cout << " ";
+			cout << "(" << (*ite).x << ", " << (*ite).y << ")" << endl;
+		}
 	}
+	ofstream file("data.txt");
+
+	list<point>::iterator ite;
+	int i = 0;
+	for (ite = visited_streets.begin(); ite != visited_streets.end(); ite++) {
+		file << ite->x << " " << ite->y << endl;
+	}
+
+	cout << endl << "Route saved in file data.txt" << endl;
 }
 point Map::looking_for_destination(point current_point, point destination, list<point>& visited_streets) {
 	char Choosen_Path;
@@ -213,10 +234,10 @@ point Map::looking_for_destination(point current_point, point destination, list<
 		Can_E = false, Recommended_To_Go_E = false,
 		Can_S = false, Recommended_To_Go_S = false,
 		Can_W = false, Recommended_To_Go_W = false;
-	if (crossroad[current_point.x][current_point.y].N != -1) Can_N = true;
-	if (crossroad[current_point.x][current_point.y].E != -1) Can_E = true;
-	if (crossroad[current_point.x][current_point.y].S != -1) Can_S = true;
-	if (crossroad[current_point.x][current_point.y].W != -1) Can_W = true;
+	if (crossroad[current_point.y][current_point.x].N != -1) Can_N = true;
+	if (crossroad[current_point.y][current_point.x].E != -1) Can_E = true;
+	if (crossroad[current_point.y][current_point.x].S != -1) Can_S = true;
+	if (crossroad[current_point.y][current_point.x].W != -1) Can_W = true;
 
 	point previous_point;
 	if (visited_streets.size() > 1) {
@@ -237,7 +258,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 
 
 		if (Recommended_To_Go_N && Recommended_To_Go_E) {
-			if (crossroad[current_point.x][current_point.y].N < crossroad[current_point.x][current_point.y].E) {
+			if (crossroad[current_point.y][current_point.x].N < crossroad[current_point.y][current_point.x].E) {
 				Choosen_Path = 'N';
 			}
 			else
@@ -246,7 +267,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		else if (Recommended_To_Go_E && Recommended_To_Go_S) {
-			if (crossroad[current_point.x][current_point.y].E < crossroad[current_point.x][current_point.y].S) {
+			if (crossroad[current_point.y][current_point.x].E < crossroad[current_point.y][current_point.x].S) {
 				Choosen_Path = 'E';
 			}
 			else
@@ -255,7 +276,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		else if (Recommended_To_Go_S && Recommended_To_Go_W) {
-			if (crossroad[current_point.x][current_point.y].S < crossroad[current_point.x][current_point.y].W) {
+			if (crossroad[current_point.y][current_point.x].S < crossroad[current_point.y][current_point.x].W) {
 				Choosen_Path = 'S';
 			}
 			else
@@ -264,7 +285,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		else if (Recommended_To_Go_W && Recommended_To_Go_N) {
-			if (crossroad[current_point.x][current_point.y].W < crossroad[current_point.x][current_point.y].N) {
+			if (crossroad[current_point.y][current_point.x].W < crossroad[current_point.y][current_point.x].N) {
 				Choosen_Path = 'W';
 			}
 			else
@@ -284,25 +305,28 @@ point Map::looking_for_destination(point current_point, point destination, list<
 		else if (Recommended_To_Go_S && !Recommended_To_Go_N  && !Recommended_To_Go_W  && !Recommended_To_Go_E) {
 			Choosen_Path = 'S';
 		}
-		else if (Can_E && !Can_S && !Can_N && !Can_W) {
+		else if (Can_E) {
 			Choosen_Path = 'E';
 		}
-		else if (Can_W && !Can_S && !Can_N && !Can_E) {
+		else if (Can_W) {
 			Choosen_Path = 'W';
 		}
-		else if (Can_N && !Can_S && !Can_E && !Can_W) {
+		else if (Can_N) {
 			Choosen_Path = 'N';
 		}
-		else if (Can_S && !Can_E && !Can_N && !Can_W) {
+		else if (Can_S) {
 			Choosen_Path = 'S';
 		}
-		else if (!Can_E && !Can_N && !Can_S && !Can_W) {
-			cout << "THIS SHOULD BE EXEPCTION";
-			return point(-1, -1);
-		}
 		else {
-			cout << "SOMETHING IS WRONG, NOT ENOUGH SITUATIONS";
+			cout << "Havent found way, return to previous point \n";
+			if (visited_streets.size() > 1) {
+				return previous_point;
+			}
+			else {
+				return current_point;
+			}
 		}
+
 
 		random_device rd;
 		default_random_engine e1(rd());
@@ -311,7 +335,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 		Propability_of_Trafic_Jam = uniform_dist(e1)*0.01;
 
 		if (Choosen_Path == 'E') {
-			if (crossroad[current_point.x][current_point.y].E < Propability_of_Trafic_Jam) {
+			if (crossroad[current_point.y][current_point.x].E < Propability_of_Trafic_Jam) {
 				current_point.x++;
 				break;
 			}
@@ -322,7 +346,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		if (Choosen_Path == 'N') {
-			if (crossroad[current_point.x][current_point.y].N < Propability_of_Trafic_Jam) {
+			if (crossroad[current_point.y][current_point.x].N < Propability_of_Trafic_Jam) {
 				current_point.y--;
 				break;
 			}
@@ -333,7 +357,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		if (Choosen_Path == 'W') {
-			if (crossroad[current_point.x][current_point.y].W < Propability_of_Trafic_Jam) {
+			if (crossroad[current_point.y][current_point.x].W < Propability_of_Trafic_Jam) {
 				current_point.x--;
 				break;
 			}
@@ -344,7 +368,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 		if (Choosen_Path == 'S') {
-			if (crossroad[current_point.x][current_point.y].S < Propability_of_Trafic_Jam) {
+			if (crossroad[current_point.y][current_point.x].S < Propability_of_Trafic_Jam) {
 				current_point.y++;
 				break;
 			}
@@ -355,7 +379,7 @@ point Map::looking_for_destination(point current_point, point destination, list<
 			}
 		}
 	}
-	visited_streets.push_back(current_point);
+	//cout << crossroad[2][4].E;
 	return current_point;
 }
 void Map::Draw() {
