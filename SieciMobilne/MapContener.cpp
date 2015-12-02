@@ -194,14 +194,17 @@ void Map::Find_Way_Extended(point source, point destination)
 	}
 
 	ofstream file("data.txt");
+	ofstream file2("data2.txt");
 
 	list<point>::iterator ite;
 	int i = 0;
 	for (ite = visited_streets.begin(); ite != visited_streets.end(); ite++) {
 		file << ite->x << " " << ite->y << endl;
+		file2 << i << " " << ite->x << ite->y << endl;
+		i++;
 	}
 
-	cout << endl << "Route saved in file data.txt" << endl;
+	cout << endl << "Route saved in files data.txt and data2.txt" << endl;
 }
 void Map::Find_Way_Attempt_Third(point source, point destination) {
 	list<point> visited_streets;
@@ -218,15 +221,19 @@ void Map::Find_Way_Attempt_Third(point source, point destination) {
 			cout << "(" << (*ite).x << ", " << (*ite).y << ")" << endl;
 		}
 	}
+	
 	ofstream file("data.txt");
+	ofstream file2("data2.txt");
 
 	list<point>::iterator ite;
 	int i = 0;
 	for (ite = visited_streets.begin(); ite != visited_streets.end(); ite++) {
 		file << ite->x << " " << ite->y << endl;
+		file2 << i << " " << ite->x << ite->y << endl;
+		i++;
 	}
 
-	cout << endl << "Route saved in file data.txt" << endl;
+	cout << endl << "Route saved in files data.txt and data2.txt" << endl;
 }
 point Map::looking_for_destination(point current_point, point destination, list<point>& visited_streets) {
 	char Choosen_Path;

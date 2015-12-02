@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SieciMobilne", "SieciMobilne\SieciMobilne.vcxproj", "{56B47F80-BA61-43C2-90E3-AAB351DAC2AC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Projekt2-Korek", "SieciMobilne\SieciMobilne.vcxproj", "{56B47F80-BA61-43C2-90E3-AAB351DAC2AC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project4-Events", "Project4-Events\Project4-Events.vcxproj", "{A5D75655-5318-4FAC-8C2A-6A4B5712F709}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{56B47F80-BA61-43C2-90E3-AAB351DAC2AC}.Release|x64.Build.0 = Release|x64
 		{56B47F80-BA61-43C2-90E3-AAB351DAC2AC}.Release|x86.ActiveCfg = Release|Win32
 		{56B47F80-BA61-43C2-90E3-AAB351DAC2AC}.Release|x86.Build.0 = Release|Win32
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Debug|x64.ActiveCfg = Debug|x64
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Debug|x64.Build.0 = Debug|x64
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Debug|x86.ActiveCfg = Debug|Win32
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Debug|x86.Build.0 = Debug|Win32
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Release|x64.ActiveCfg = Release|x64
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Release|x64.Build.0 = Release|x64
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Release|x86.ActiveCfg = Release|Win32
+		{A5D75655-5318-4FAC-8C2A-6A4B5712F709}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
