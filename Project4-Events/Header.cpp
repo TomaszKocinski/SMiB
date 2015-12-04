@@ -1,7 +1,6 @@
 #include "Header.h"
 #include <iostream>
 using namespace std;
-int Channel::count = 0;
 Queue::Queue(int length)
 {
 	if (length > 0)
@@ -21,6 +20,13 @@ int Queue::getL()
 	return L;
 }
 
+bool Queue::isFull()
+{
+	if(l<L)
+		return false;
+	return true;
+}
+
 int Queue::operator++(int)
 {
 	if (l == L) {
@@ -28,7 +34,7 @@ int Queue::operator++(int)
 		return l;
 	}
 	else
-		return l++;
+		return ++l;
 }
 
 int Queue::operator--(int)
@@ -38,12 +44,11 @@ int Queue::operator--(int)
 		return l;
 	}
 	else
-		return l--;
+		return --l;
 }
 
 Channel::Channel()
 {
-	number = ++count;
 	busy = false;
 }
 
@@ -57,8 +62,9 @@ void Channel::setBusy()
 
 void Channel::setFree()
 {
-	if (!busy)
+	if (!busy){
 		cout << "Channel is already free" << endl;
+	}
 	else
 		busy = false;
 }
@@ -69,6 +75,12 @@ bool Channel::isBusy()
 		return true;
 	else
 		return false;
+}
+
+std::ostream& operator<<(std::ostream& os, const Channel& mp)
+{
+	if (mp.busy)return os << "t";
+	return os << "f";
 }
 
 EventHandler::EventHandler()
@@ -92,4 +104,26 @@ pair<double, int> EventHandler::pop()
 	events.erase(events.begin());
 	return temp;
 }
+
+pair<double, int> EventHandler::showFirst()
+{
+	if (events.empty()) {
+		throw exception("EventHandler table is empty.");
+	}
+	pair<double, int> temp;
+	temp.first = events.begin()->first;
+	temp.second = events.begin()->second;
+	return temp;
+}
+
+void EventHandler::replace(double d, int i)
+{
+	multimap<double, int>::iterator it;
+	for (it = events.begin(); it->second != i; it++);
+	if (it == events.end() || it->second !=i ) throw exception("Handler::replace coudln't find right event to replace");
+	events.erase(it);
+	events.insert(pair<double, int>(d, i));
+}
+
+
 
