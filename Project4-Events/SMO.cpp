@@ -3,7 +3,7 @@
 #include <random>
 #include <iostream>
 #include <iomanip>
-SMO::SMO() :T(8), L(3), N(2), queue(L)
+SMO::SMO() :T(4), L(3), N(2), queue(L)
 {
 	if (N < 1 || N>6)
 		N = 3;
