@@ -1,26 +1,38 @@
 #pragma once
-#include "Header.h"
+#include "EventHandler.h"
+#include "Channel.h"
+#include "Queue.h"
+#include"Report.h"
 #include <vector>
+#include <random>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+using namespace std;
+
 class SMO
 {
-
-	
-public:
-	const int T;
-	const int L;
+protected:
+	SMO();
+	int T;
 	int N;
-	double currentMi;
-	double currentLa;
-	vector<int> values_from_PD;
-	vector<double> values_from_EX;
-	Queue queue;
+	int La;
+	int Mi;
+	Queue *queue;
 	vector<Channel> channels;
 	EventHandler *event_handler;
-
-	SMO();
-	void Initializing_vec_of_PD();
-	void event_t1();
-	void event_t2(int channel);
-	void Initialize_event_tab();
-	void setCurrentMiLa();
+	pair<double, int> currentT;
+	double generate() const;
+	Report* report;
+public:
+	SMO(int, int, int = 8, int = 3, int = 15);
+	virtual ~SMO();
+	pair<double, int> getCurrentT() const;
+	int getT() const;
+	int getN() const;
+	int getL() const;
+	bool event();
+	virtual double getT0Time() const;
+	virtual double getTnTime() const;
+	void createReport(ostream& = cout, ostream& = cout, ostream& = cout, ostream& = cout) const;
 };

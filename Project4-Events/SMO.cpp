@@ -1,98 +1,151 @@
 #include "SMO.h"
-#include "Header.h"
-#include <random>
-#include <iostream>
-#include <iomanip>
-SMO::SMO() :T(4), L(3), N(2), queue(L)
+#include <fstream>
+
+SMO::SMO()
 {
-	if (N < 1 || N>6)
-		N = 3;
+}
+
+SMO::SMO(int laValue, int miValue, int tValue, int nValue, int lValue)
+{
+	La = laValue;
+	Mi = miValue;
+
+	if (tValue < 1)
+		throw exception("T value too small");
+	else if (tValue>23)
+		throw exception("T value too large");
+	else
+		T = tValue;
+
+	if (nValue < 1)
+		throw exception("N value too small");
+	else if (nValue > 6)
+		throw exception("N value is too large");
+	else
+		N = nValue;
+
+	queue = new Queue(lValue);
+
 	event_handler = new EventHandler();
+
 	for (int i = 0; i < N; i++)
 	{
 		channels.push_back(Channel());
 	}
-	Initializing_vec_of_PD();
-	Initialize_event_tab();
+
+	event_handler->push(getT0Time(), 0);
+
+	report = new Report(T);
 }
 
-void SMO::Initializing_vec_of_PD()
+SMO::~SMO()
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::poisson_distribution<> d(4);
-	for (int i = 0; i < T; i++)
-	{
-		values_from_PD.push_back(d(gen));
-	}
-	std::exponential_distribution<> e(4);
-	for (int i = 0; i < T; i++)
-	{
-		values_from_EX.push_back(e(gen));
-	}
-	for (vector<int>::iterator ite = values_from_PD.begin(); ite != values_from_PD.end(); ite++)
-		cout <<*ite << "    ";
-	cout << endl;
-	for (vector<double>::iterator ite = values_from_EX.begin(); ite != values_from_EX.end(); ite++)
-		cout << "0."<<(int)(*ite*100) << " ";
-	cout << endl;
+	delete(event_handler);
+	delete(queue);
+	delete(report);
 }
-void SMO::event_t1()
-{
-	setCurrentMiLa();
-	event_handler->replace(event_handler->showFirst().first +(1.0 / currentLa), 0); //t1
-	if (!(queue.isFull())) {
-		queue++;
-		for (int i = 0; i < N; i++) {
-			if (!channels[i].isBusy()) {
-				queue--;
-				channels[i].setBusy();
-				event_handler->replace(event_handler->showFirst().first + (currentMi / 0.6), i+1); // ??????????????? t2
-				break;
-			}
-		}
 
+bool SMO::event()
+{
+	try
+	{
+		currentT = event_handler->pop();
+	}
+	catch (exception &e)
+	{
+		return false;
+	}
+
+	report->addTime(currentT);
+	if (currentT.second == 0)
+	{
+		double tempTime = currentT.first + getT0Time();
+		if (tempTime < T)
+			event_handler->push(tempTime, 0);
+
+		if (queue->isFull())
+			report->addTime(currentT, true);
+		else
+			(*queue)++;
 	}
 	else
 	{
-		cout << "Queue is full, patient have been forced to leave" << endl;
+		channels[currentT.second - 1].setFree();
 	}
-}
 
-void SMO::event_t2(int channel)
-{
-	setCurrentMiLa();
-	channels[channel-1].setFree();
-	event_handler->replace(1000, channel);
+	if (queue->getl() != 0)
+	{
 
-	if (queue.getl() > 0){
-		queue--;
-		channels[channel-1].setBusy();
-		event_handler->replace(event_handler->showFirst().first + (currentMi / 0.6), channel);
-	}
-}
-
-void SMO::Initialize_event_tab()
-{
-	event_handler->push(0, 0);
-
-	for (int i = 1; i <= N; i++)
-		event_handler->push(1000, i);
-}
-
-void SMO::setCurrentMiLa()
-{
-	double time = event_handler->showFirst().first;
-	for (int i = 0; i < T; i++) {
-		if (time >= i && time < i + 1 && currentMi!= values_from_PD[i] && currentMi != values_from_EX[i]){
-			currentLa = values_from_PD[i];
-			currentMi = values_from_EX[i];
-			cout << "Change of Lamda:"<<  currentLa <<" & Mi:" << currentMi <<endl;
-			break;
+		for (int i = 0; i < N; i++)
+		{
+			if (!channels[i].isBusy())
+			{
+				(*queue)--;
+				channels[i].setBusy();
+				event_handler->push(currentT.first + getTnTime(), i + 1);
+				break;
+			}
 		}
 	}
+
+	report->addQueueValue(queue->getl());
+	vector<int> tempChannels;
+	for (int i = 0; i < N; i++)
+		if (channels[i].isBusy())
+			tempChannels.push_back(1);
+		else
+			tempChannels.push_back(0);
+	report->addChannelsValues(tempChannels);
+
+	return true;
 }
 
+double SMO::generate() const
+{
+	random_device rd;
+	mt19937 generator(rd());
+	uniform_real_distribution<double> distribution(0.0, 1.0);
+	return distribution(generator);
+}
 
+double SMO::getT0Time() const
+{
+	return (1.0 / La);
+}
 
+double SMO::getTnTime() const
+{
+	return (1.0 / Mi);
+}
 
+void SMO::createReport(ostream &dataStream, ostream &callsStream, ostream &finishedStream, ostream &dismissedStream) const
+{
+	if(&dataStream == &std::cout)
+		report->saveData(dataStream);
+	else
+	{
+		report->saveData(dataStream);
+		report->saveCallsPerTimeUnit(callsStream, finishedStream);
+		report->saveDismissedPerTimeUnit(dismissedStream);
+	}
+}
+
+pair<double, int> SMO::getCurrentT() const
+{
+	return currentT;
+}
+
+int SMO::getT() const
+{
+	return T;
+}
+
+int SMO::getN() const
+{
+	return N;
+}
+
+int SMO::getL() const
+{
+	return queue->getL();
+}

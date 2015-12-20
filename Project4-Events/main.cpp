@@ -1,44 +1,51 @@
+#include "Cluster.h"
+#include "SMOrand.h"
 #include <iostream>
 #include <fstream>
-#include "SMO.h"
+
 using namespace std;
 
-int main() {
-	SMO smo;
-	ofstream file("data.txt");
-	vector<int> number_of_events_arrived_and_handled;
-	for (int i = 0; i <= smo.N; i++)
-	{
-		number_of_events_arrived_and_handled.push_back(0);
-	}
-	while (smo.event_handler->showFirst().first < smo.T) {
-		int number_of_channel_full = 0;
-		int channel_nr = smo.event_handler->showFirst().second;
-		cout <<channel_nr << " ";
-		for (int i = 0; i < smo.N; i++) {
-			cout << smo.channels[i];
-			if (smo.channels[i].isBusy()) number_of_channel_full++;
-		}
-		cout << " "<<smo.event_handler->showFirst().first << endl;
-		
-		
-		if (channel_nr == 0) {
-			smo.event_t1();
-		}
-		else if (channel_nr >0 && channel_nr <= smo.N) {
-			smo.event_t2(channel_nr);	
-		}
-		else {
-			cout << "value smo.event_handler->showFirst().second different than expected" << endl;
-		}
-		number_of_events_arrived_and_handled[channel_nr]++;
-		file << smo.event_handler->showFirst().first << " " << smo.queue.getl()<<" "<< number_of_channel_full;
+int main()
+{
+	Cluster* cluster;
+	int T = 8, mi = 2, la = 3, ch = 1;
+	Lambdas lambdas;
+	Channels channels;
+	bool option = true;
 
-		for (vector<int>::iterator ite = number_of_events_arrived_and_handled.begin(); ite != number_of_events_arrived_and_handled.end(); ite++)
-			file << " " << *ite;
-		file<< endl;
-		
+	try
+	{
+		do
+		{
+			system("CLS");
+			for (int i = 0; i < Cluster::clusterSize; i++)
+			{
+				/*cout << "Podaj Lambde komorki nr" << i + 1 << ": ";
+				cin >> la;
+				cout << "Podaj liczbe kanalow komorki nr" << i + 1 << ": ";
+				cin >> ch;*/
+				lambdas.push_back(la);
+				channels.push_back(ch);
+			}
+
+			cout << "Wybierz opcje: deterministycznie(0) / losowo(1): ";
+			cin >> option;  // false = deterministycznie, true = losowo
+			cluster = new Cluster(option, lambdas, mi, channels, T);
+			cluster->manage();
+
+			delete(cluster);
+
+			cout << endl << "Zakonczyc program? (0 = nie/1 = tak): ";
+			cin >> option;
+
+		} while (!option);
 	}
-	file.close();
+	catch (exception &e)
+	{
+		cout << e.what();
+	}
+
+	cout << endl << "Work finished" << endl << endl;
+
 	return 0;
 }
